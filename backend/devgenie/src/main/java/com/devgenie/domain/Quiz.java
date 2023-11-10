@@ -16,8 +16,13 @@ public class Quiz {
     @Column(name = "quiz_id")
     private Long id;
 
+    @Column(length = 50000)
     private String quizContent;
+
+    @Column(length = 50000)
     private String quizAnswer;
+
+    @Enumerated(EnumType.STRING)
     private Tag tag;
 
     @Builder
