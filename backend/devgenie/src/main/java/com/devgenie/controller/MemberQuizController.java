@@ -1,5 +1,6 @@
 package com.devgenie.controller;
 
+import com.devgenie.response.MemberQuizResponseDto;
 import com.devgenie.response.QuizResponseDto;
 import com.devgenie.service.MemberQuizService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberQuizController {
 
-//    private final MemberQuizService memberQuizService;
-//
-//    @GetMapping("/myquiz")
-//    public Page<QuizResponseDto> findAllMemberQuizByTag(@RequestParam(name = "tag", defaultValue = "ALL") String tag,
-//                                                        @PageableDefault(size = 10, sort = "id",  direction = Sort.Direction.DESC) Pageable pageable){
-//
-//        return memberQuizService.findAllMemberQuizByTag(tag, pageable);
-//    }
+    private final MemberQuizService memberQuizService;
+
+    @GetMapping("/myquiz")
+    public Page<MemberQuizResponseDto> findAllMemberQuizByTag(@RequestParam(name = "tag", defaultValue = "ALL") String tag,
+                                                              @PageableDefault(size = 10, sort = "id",  direction = Sort.Direction.DESC) Pageable pageable){
+
+        return memberQuizService.findAllMemberQuizByTag(tag, pageable);
+    }
 }

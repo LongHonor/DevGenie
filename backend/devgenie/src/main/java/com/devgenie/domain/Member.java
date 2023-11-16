@@ -19,7 +19,6 @@ public class Member {
     private String nickName;
     private String loginId;
     private String password;
-    
 
     @Builder
     public Member(String nickName, String loginId, String password) {

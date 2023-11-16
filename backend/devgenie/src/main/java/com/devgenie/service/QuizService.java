@@ -50,7 +50,7 @@ public class QuizService {
         MemberQuiz memberQuiz;
 
         //해당문제가 멤버퀴즈 테이블에 존재할 경우
-        if(memberQuizRepository.existsById(quizId)){
+        if(memberQuizRepository.existsByQuiz(quiz)){
             memberQuiz = memberQuizRepository.findByQuiz(quiz).orElseThrow();//todo 예외처리 필요
             memberQuiz.updateMemberQuiz(submissionAnswer, feedback);
         }

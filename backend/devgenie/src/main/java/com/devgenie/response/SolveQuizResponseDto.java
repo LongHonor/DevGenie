@@ -20,7 +20,7 @@ public class SolveQuizResponseDto {
     private Long memberQuizId;
     private String submissionAnswer;
     private String feedback;
-    private LocalDateTime localDateTime;
+    private LocalDateTime solvedDateTime;
     private OblivionStatus oblivionStatus;
 
     @Builder
@@ -34,7 +34,7 @@ public class SolveQuizResponseDto {
         this.memberQuizId = memberQuizId;
         this.submissionAnswer = submissionAnswer;
         this.feedback = feedback;
-        this.localDateTime = localDateTime;
+        this.solvedDateTime = localDateTime;
         this.oblivionStatus = oblivionStatus;
     }
 
