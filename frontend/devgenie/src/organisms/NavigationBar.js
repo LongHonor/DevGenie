@@ -73,8 +73,14 @@ const NavigationBar = () => {
           <Typography
             variant='h6'
             noWrap
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            to='/'
+            component={Link}
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', sm: 'block' },
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
           >
             DevGenie
           </Typography>

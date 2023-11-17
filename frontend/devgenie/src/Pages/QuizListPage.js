@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../organisms/NavigationBar';
 
 import Quiz from '../components/QuizElementBox';
+import Feedback from '../components/AiFeedbackBox';
 import { listData } from '../questionList';
 import {
   Card,
@@ -47,7 +48,9 @@ const QuizListPage = () => {
                   hello
                 </Typography>
               </CardContent>
-              <CardContent></CardContent>
+              <CardContent>
+                <Feedback />
+              </CardContent>
             </Card>
           </Grid>
         </Grid>
