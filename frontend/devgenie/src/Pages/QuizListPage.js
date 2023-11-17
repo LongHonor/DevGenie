@@ -1,7 +1,7 @@
 import React from 'react';
-
+import Header from '../organisms/NavigationBar';
 const QuizListPage = () => {
-  return <div>QuizList</div>;
+  return <Header />;
 };
 
 export default QuizListPage;

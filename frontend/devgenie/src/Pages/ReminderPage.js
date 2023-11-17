@@ -1,7 +1,7 @@
 import React from 'react';
-
+import Header from '../organisms/NavigationBar';
 const ReminderPage = () => {
-  return <div>ReminderPage</div>;
+  return <Header />;
 };
 
 export default ReminderPage;
