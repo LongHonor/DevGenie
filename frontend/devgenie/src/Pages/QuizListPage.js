@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../organisms/NavigationBar';
 
+import Quiz from '../components/QuizElementBox';
 import { listData } from '../questionList';
 import {
   Card,
@@ -24,21 +25,14 @@ const QuizListPage = () => {
           <Grid container xs={4} md={7}>
             {listData.map((list) => (
               <Grid xs={12} key={list.id}>
-                <Card variant='outlined'>
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 14 }}
-                      color='text.secondary'
-                      gutterBottom
-                    >
-                      {list.title}
-                    </Typography>
-                    <Typography variant='body2'>
-                      <br />푼 사람 수 : {list.numberSolved} 명 평균 점수 :{' '}
-                      {list.averageScore} 점
-                    </Typography>
-                  </CardContent>
-                </Card>
+                <Quiz
+                  title={list.title}
+                  numberSolved={list.numberSolved}
+                  averageScore={list.averageScore}
+                  tag={list.tag}
+                  key={list.id}
+                  id={list.id}
+                />
               </Grid>
             ))}
           </Grid>
