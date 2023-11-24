@@ -7,21 +7,35 @@ import {
   CardMedia,
   Typography,
   Box,
+  Chip,
+  Divider,
 } from '@mui/material';
 import React, { useState } from 'react';
 import QuizeDialog from './QuizExplainBox';
 
-const QuizElementBox = ({ title, numberSolved, averageScore, id }) => {
+const QuizElementBox = ({ title, numberSolved, averageScore, id, tag }) => {
+  const colorForTag = (tag) => {
+    switch (tag) {
+      case 'DATABASE':
+        return 'primary';
+      case 'NETWORK':
+        return 'warning';
+      case 'OPERATING_SYSTEM':
+        return 'success';
+      case 'DATA_STRUCTURE':
+        return 'info';
+    }
+  };
   return (
     <div>
       <Card variant='outlined' sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
+          <Chip label={tag} color={colorForTag(tag)} />
+          <Typography sx={{ fontSize: 20 }} color='text.secondary' gutterBottom>
             {title}
           </Typography>
-          <Typography variant='body2'>
-            <br />푼 사람 수 : {numberSolved} 명 평균 점수 : {averageScore} 점
-          </Typography>
+          <Divider variant='middle' />
+          <Typography variant='body2'></Typography>
         </CardContent>
         <CardActions
           sx={{
@@ -32,7 +46,7 @@ const QuizElementBox = ({ title, numberSolved, averageScore, id }) => {
             // height: 'auto',
           }}
         >
-          <QuizeDialog />
+          <QuizeDialog title={title} />
         </CardActions>
       </Card>
     </div>

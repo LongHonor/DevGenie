@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 
-const QuizExplainBox = () => {
+const QuizExplainBox = ({ title }) => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,7 +30,7 @@ const QuizExplainBox = () => {
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             To solve to this problem, please enter your answer here.
