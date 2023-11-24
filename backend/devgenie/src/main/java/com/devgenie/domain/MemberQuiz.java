@@ -56,8 +56,14 @@ public class MemberQuiz {
         this.oblivionStatus = switch(this.oblivionStatus) {
             case OBLIVION_STATUS_1 -> OblivionStatus.OBLIVION_STATUS_2;
             case OBLIVION_STATUS_2 -> OblivionStatus.OBLIVION_STATUS_3;
-            case OBLIVION_STATUS_3, OBLIVION_STATUS_4 -> OblivionStatus.OBLIVION_STATUS_4;
+            case OBLIVION_STATUS_3 -> OblivionStatus.OBLIVION_STATUS_4;
+            case OBLIVION_STATUS_4,OBLIVION_STATUS_5 -> OblivionStatus.OBLIVION_STATUS_5;
             default -> throw new EnumConstantNotPresentException(OblivionStatus.class,"존재하지 않는 망각상태입니다");
         };
     }
+
+    public void setOblivionStatusToZero(){
+        this.oblivionStatus = OblivionStatus.OBLIVION_STATUS_0;
+    }
+
 }

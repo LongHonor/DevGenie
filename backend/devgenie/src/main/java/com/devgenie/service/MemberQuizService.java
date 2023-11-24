@@ -1,5 +1,6 @@
 package com.devgenie.service;
 
+import com.devgenie.domain.MemberQuiz;
 import com.devgenie.domain.Quiz;
 import com.devgenie.domain.Tag;
 import com.devgenie.repository.MemberQuizRepository;
@@ -15,6 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ public class MemberQuizService {
 
     //문제 조회
     public Page<MemberQuizResponseDto> findAllMemberQuizByTag(String tag, Pageable pageable) {
+        updateOblivionStatus();
 
         //페이징 정보 설정
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
@@ -33,5 +39,26 @@ public class MemberQuizService {
 
         return memberQuizRepository.findAll(pageRequest)
                 .map(MemberQuizResponseDto::of);
+    }
+
+    // 1주일이 넘어가면 oblivion_status_0으로 바꾸는 메소드
+    private void updateOblivionStatus() {
+        List<MemberQuiz> memberQuizList = memberQuizRepository.findAll();
+
+        memberQuizList.stream()
+                .filter(this::isPastDue)
+                .forEach(MemberQuiz::setOblivionStatusToZero);
+    }
+
+    private boolean isPastDue(MemberQuiz memberQuiz) {
+        long daysBetween = ChronoUnit.DAYS.between(memberQuiz.getSolvedDateTime(), LocalDateTime.now());
+
+        return switch (memberQuiz.getOblivionStatus()) {
+            case OBLIVION_STATUS_1 -> daysBetween > 7;
+            case OBLIVION_STATUS_2 -> daysBetween > 30;
+            case OBLIVION_STATUS_3 -> daysBetween > 90;
+            case OBLIVION_STATUS_4 -> daysBetween > 180;
+            default -> false;
+        };
     }
 }
