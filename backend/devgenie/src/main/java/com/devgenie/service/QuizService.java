@@ -19,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -29,33 +33,59 @@ public class QuizService {
     private final QuizRepository quizRepository;
 
     //문제 조회
-    public Page<QuizResponseDto> findAllQuizByTag(String tag, Pageable pageable){
+    public Page<QuizResponseDto> findAllQuizByTag(List<String> tags, Pageable pageable){
 
         //페이징 정보 설정
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "Id"));
+                Sort.by(Sort.Direction.DESC, "id"));
 
-        //모든 문제 조회
-        if(tag.equals("ALL")){
+        //전체 문제 조회
+        if(tags.contains("ALL")){
             return quizRepository.findAll(pageRequest)
                     .map(QuizResponseDto::of);
         }
+
+        //자료형을 Tag로 변환
+        List<Tag> tagList = tags.stream()
+                                .map(Tag::valueOf)
+                                .collect(Collectors.toList());
         //태그에 해당하는 문제 조회
-        return quizRepository.findPageByTag(Tag.valueOf(tag),pageRequest)
+        return quizRepository.findPageByTagIn(tagList,pageRequest)
                 .map(QuizResponseDto::of);
+    }
+
+    public List<QuizResponseDto> findRandomQuiz(int count){
+        long qty = quizRepository.count();
+        List<Quiz> randomQuizList = new ArrayList<>();
+
+        while (randomQuizList.size() < count) {
+            int idx = (int)(Math.random() * qty);
+            Page<Quiz> quizPage = quizRepository.findAll(PageRequest.of(idx, 1));
+            if (quizPage.hasContent()) {
+                Quiz quiz = quizPage.getContent().get(0);
+                if (!randomQuizList.contains(quiz)) {
+                    randomQuizList.add(quiz);
+                }
+            }
+        }
+
+        return randomQuizList.stream()
+                .map(QuizResponseDto::of)
+                .collect(Collectors.toList());
     }
 
     //문제 풀이
     public SolveQuizResponseDto solveQuiz(Long quizId, String submissionAnswer){
         Quiz quiz = quizRepository.findById(quizId).orElseThrow();
 
+//        RestTemplate restTemplate = new RestTemplate();
+//        //LLM 서버 url
+//        String url = "https://f17c-34-87-120-181.ngrok-free.app/알고리즘은 일련의 작업을 수행하기 위한 명확한 지침 또는 규칙의 집합으로, 주어진 문제를 해결하는 데 사용됩니다. 예를 들어, 검색, 정렬, 데이터 압축 등 다양한 작업을 수행하는 데에 사용됩니다.이 답안을 기준으로 알고리즘은 컴퓨터과학이야 라는말을 피드백해줘";
+//        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+//        String feedback = response.getBody();
+//        System.out.println(feedback);
 
-        RestTemplate restTemplate = new RestTemplate();
-        //LLM 서버 url
-        String url = "https://f17c-34-87-120-181.ngrok-free.app/알고리즘은 일련의 작업을 수행하기 위한 명확한 지침 또는 규칙의 집합으로, 주어진 문제를 해결하는 데 사용됩니다. 예를 들어, 검색, 정렬, 데이터 압축 등 다양한 작업을 수행하는 데에 사용됩니다.이 답안을 기준으로 알고리즘은 컴퓨터과학이야 라는말을 피드백해줘";
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-        String feedback = response.getBody();
-        System.out.println(feedback);
+        String feedback = "피드백입니다.";
 
         MemberQuiz memberQuiz;
 

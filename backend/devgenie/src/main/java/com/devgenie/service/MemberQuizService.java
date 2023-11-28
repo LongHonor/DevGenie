@@ -50,6 +50,7 @@ public class MemberQuizService {
                 .forEach(MemberQuiz::setOblivionStatusToZero);
     }
 
+    //기한이 지났는지 판별하는 함수
     private boolean isPastDue(MemberQuiz memberQuiz) {
         long daysBetween = ChronoUnit.DAYS.between(memberQuiz.getSolvedDateTime(), LocalDateTime.now());
 
