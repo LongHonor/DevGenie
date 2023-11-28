@@ -54,6 +54,7 @@ public class MemberQuiz {
         this.solvedDateTime = LocalDateTime.now();
         //현재 망각 상태에 따라 상태변경
         this.oblivionStatus = switch(this.oblivionStatus) {
+            case OBLIVION_STATUS_0 -> OblivionStatus.OBLIVION_STATUS_1;
             case OBLIVION_STATUS_1 -> OblivionStatus.OBLIVION_STATUS_2;
             case OBLIVION_STATUS_2 -> OblivionStatus.OBLIVION_STATUS_3;
             case OBLIVION_STATUS_3 -> OblivionStatus.OBLIVION_STATUS_4;

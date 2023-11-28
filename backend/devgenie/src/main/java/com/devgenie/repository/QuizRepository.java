@@ -14,6 +14,6 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
     Page<Quiz> findAll(Pageable pageable);
 
     //태그를 통해 퀴즈 검색
-    Page<Quiz> findPageByTag(Tag tag, Pageable pageable);
+    Page<Quiz> findPageByTagIn(List<Tag> tagList, Pageable pageable);
 
 }

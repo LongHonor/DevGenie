@@ -13,6 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +25,16 @@ public class QuizController {
 
     //문제 조회
     @GetMapping("/quiz")
-    public Page<QuizResponseDto> findAllQuizByTag(@RequestParam(name = "tag", defaultValue = "ALL") String tag,
+    public Page<QuizResponseDto> findAllQuizByTag(@RequestParam(name = "tag", defaultValue = "ALL") List<String> tags,
                                                   @PageableDefault(size = 10, sort = "id",  direction = Sort.Direction.DESC) Pageable pageable){
 
-        return quizService.findAllQuizByTag(tag, pageable);
+        return quizService.findAllQuizByTag(tags, pageable);
+    }
+
+    @GetMapping("/quiz/random")
+    public List<QuizResponseDto> findRandomQuiz(@RequestParam(name = "count", defaultValue = "5") int count){
+
+        return quizService.findRandomQuiz(count);
     }
 
     //문제 풀기
