@@ -22,12 +22,13 @@ public class MemberQuizResponseDto {
     private Long memberQuizId;
     private String submissionAnswer;
     private String feedback;
+    private Integer point;
     private LocalDateTime solvedDateTime;
     private OblivionStatus oblivionStatus;
 
     @Builder
     public MemberQuizResponseDto(Long quizId, String quizContent, String quizAnswer, Tag tag, Long memberQuizId,
-                                String submissionAnswer, String feedback, LocalDateTime solvedDateTime, OblivionStatus oblivionStatus) {
+                                String submissionAnswer, String feedback, LocalDateTime solvedDateTime, OblivionStatus oblivionStatus, Integer point) {
         this.quizId = quizId;
         this.quizContent = quizContent;
         this.quizAnswer = quizAnswer;
@@ -36,6 +37,7 @@ public class MemberQuizResponseDto {
         this.memberQuizId = memberQuizId;
         this.submissionAnswer = submissionAnswer;
         this.feedback = feedback;
+        this.point = point;
         this.solvedDateTime = solvedDateTime;
         this.oblivionStatus = oblivionStatus;
     }

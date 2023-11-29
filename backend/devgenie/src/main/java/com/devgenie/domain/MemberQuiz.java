@@ -32,25 +32,29 @@ public class MemberQuiz {
     @Column(length = 5000)
     private String feedback; //LLM 모델이 생성한 피드백
 
+    private Integer point;
+
     private LocalDateTime solvedDateTime; //문제를 해결한 날짜 및 시간
 
     @Enumerated(EnumType.STRING)
     private OblivionStatus oblivionStatus; //망각 상태 등급
 
     @Builder
-    public MemberQuiz(Quiz quiz, Member member, String submissionAnswer, String feedback) {
+    public MemberQuiz(Quiz quiz, Member member, String submissionAnswer, String feedback, Integer point) {
         this.quiz = quiz;
         this.member = member;
         this.submissionAnswer = submissionAnswer;
         this.feedback = feedback;
+        this.point = point;
         this.solvedDateTime = LocalDateTime.now();
         this.oblivionStatus = OblivionStatus.OBLIVION_STATUS_1;
     }
 
     //업데이트 메소드(문제를 새로 풀 때 호출)
-    public void updateMemberQuiz(String submissionAnswer, String feedback){
+    public void updateMemberQuiz(String submissionAnswer, String feedback, Integer point){
         this.submissionAnswer = submissionAnswer;
         this.feedback = feedback;
+        this.point = point;
         this.solvedDateTime = LocalDateTime.now();
         //현재 망각 상태에 따라 상태변경
         this.oblivionStatus = switch(this.oblivionStatus) {
