@@ -6,6 +6,7 @@ import com.devgenie.domain.Tag;
 import com.devgenie.repository.MemberQuizRepository;
 import com.devgenie.repository.MemberRepository;
 import com.devgenie.repository.QuizRepository;
+import com.devgenie.response.FeedbackResponse;
 import com.devgenie.response.SolveQuizResponseDto;
 import com.devgenie.response.QuizResponseDto;
 import jakarta.transaction.Transactional;
@@ -14,13 +15,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,21 +82,33 @@ public class QuizService {
     public SolveQuizResponseDto solveQuiz(Long quizId, String submissionAnswer){
         Quiz quiz = quizRepository.findById(quizId).orElseThrow();
 
-//        RestTemplate restTemplate = new RestTemplate();
-//        //LLM 서버 url
-//        String url = "https://f17c-34-87-120-181.ngrok-free.app/알고리즘은 일련의 작업을 수행하기 위한 명확한 지침 또는 규칙의 집합으로, 주어진 문제를 해결하는 데 사용됩니다. 예를 들어, 검색, 정렬, 데이터 압축 등 다양한 작업을 수행하는 데에 사용됩니다.이 답안을 기준으로 알고리즘은 컴퓨터과학이야 라는말을 피드백해줘";
-//        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-//        String feedback = response.getBody();
-//        System.out.println(feedback);
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://f2e5-34-170-153-43.ngrok-free.app/json_receive")
+                .encode()
+                .build()
+                .toUri();
 
-        String feedback = "피드백입니다.";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("quizAnswer", quiz.getQuizAnswer());
+        map.put("submissionAnswer", submissionAnswer);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<FeedbackResponse> response = restTemplate.postForEntity(uri, entity, FeedbackResponse.class);
+
+        String feedback = response.getBody().getFeedback();
+        int point = response.getBody().getPoint();
 
         MemberQuiz memberQuiz;
 
         //해당문제가 멤버퀴즈 테이블에 존재할 경우
         if(memberQuizRepository.existsByQuiz(quiz)){
             memberQuiz = memberQuizRepository.findByQuiz(quiz).orElseThrow();//todo 예외처리 필요
-            memberQuiz.updateMemberQuiz(submissionAnswer, feedback);
+            memberQuiz.updateMemberQuiz(submissionAnswer, feedback, point);
         }
         else{
             //새로운 멤버퀴즈 생성
@@ -100,6 +116,7 @@ public class QuizService {
                     .quiz(quiz)
                     .submissionAnswer(submissionAnswer)
                     .feedback(feedback)
+                    .point(point)
                     .build();
             memberQuizRepository.save(memberQuiz);
         }
