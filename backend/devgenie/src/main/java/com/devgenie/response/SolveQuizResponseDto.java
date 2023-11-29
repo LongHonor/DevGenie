@@ -20,12 +20,13 @@ public class SolveQuizResponseDto {
     private Long memberQuizId;
     private String submissionAnswer;
     private String feedback;
+    private Integer point;
     private LocalDateTime solvedDateTime;
     private OblivionStatus oblivionStatus;
 
     @Builder
     public SolveQuizResponseDto(Long quizId, String quizContent, String quizAnswer, String tag, Long memberQuizId,
-                                String submissionAnswer, String feedback, LocalDateTime localDateTime, OblivionStatus oblivionStatus) {
+                                String submissionAnswer, String feedback, Integer point, LocalDateTime localDateTime, OblivionStatus oblivionStatus) {
         this.quizId = quizId;
         this.quizContent = quizContent;
         this.quizAnswer = quizAnswer;
@@ -34,6 +35,7 @@ public class SolveQuizResponseDto {
         this.memberQuizId = memberQuizId;
         this.submissionAnswer = submissionAnswer;
         this.feedback = feedback;
+        this.point = point;
         this.solvedDateTime = localDateTime;
         this.oblivionStatus = oblivionStatus;
     }
@@ -47,6 +49,7 @@ public class SolveQuizResponseDto {
                 .memberQuizId(memberQuiz.getId())
                 .submissionAnswer(memberQuiz.getSubmissionAnswer())
                 .feedback(memberQuiz.getFeedback())
+                .point(memberQuiz.getPoint())
                 .localDateTime(memberQuiz.getSolvedDateTime())
                 .oblivionStatus(memberQuiz.getOblivionStatus())
                 .build();
