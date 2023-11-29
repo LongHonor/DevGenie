@@ -83,7 +83,7 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(quizId).orElseThrow();
 
         URI uri = UriComponentsBuilder
-                .fromUriString("https://f2e5-34-170-153-43.ngrok-free.app/json_receive")
+                .fromUriString("https://7e16-34-125-7-116.ngrok-free.app/json_receive")
                 .encode()
                 .build()
                 .toUri();
