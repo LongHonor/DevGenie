@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, matchPath } from 'react-router-dom';
+import { Link, Outlet, matchPath, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -57,19 +57,12 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const NavigationBar = () => {
+  const { pathname } = useLocation();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static' color='info'>
         <Toolbar>
-          <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant='h6'
             noWrap
@@ -77,15 +70,16 @@ const NavigationBar = () => {
             component={Link}
             sx={{
               flexGrow: 1,
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: 'none', sm: 'flex' },
               color: 'inherit',
+              letterSpacing: '.1rem',
               textDecoration: 'none',
             }}
           >
             DevGenie
           </Typography>
 
-          <Tabs>
+          <Tabs value={pathname} textColor='inherit'>
             <Tab
               label='문제'
               value='/quizlist'

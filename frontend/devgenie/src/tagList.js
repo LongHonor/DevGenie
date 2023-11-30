@@ -15,6 +15,10 @@ const taglist = [
     id: 'DATA_STRUCTURE',
     title: '자료구조',
   },
+  {
+    id: 'ALGORITHM',
+    title: '알고리즘',
+  },
 ];
 
 export { taglist };
