@@ -10,7 +10,7 @@ import {
 import React, { useState } from 'react';
 import apiClient from '../api';
 
-const QuizExplainBox = ({ title, id }) => {
+const QuizExplainBox = ({ title, id, bid }) => {
   const [open, setOpen] = useState(false);
   const [answer, setAnswer] = useState(false);
   const [result, setResult] = useState('');
@@ -29,14 +29,14 @@ const QuizExplainBox = ({ title, id }) => {
     <>
       <Button
         autoFocus
-        variant='outlined'
+        sx={{ justifyContent: 'center', textAlign: 'center' }}
         size='small'
         onClick={handleClickOpen}
       >
-        try
+        {bid}
       </Button>
 
-      <Dialog open={open} onClose={handleClose} sx={{ minWidth: 400 }}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <TextField
