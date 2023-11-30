@@ -4,15 +4,27 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardMedia,
   Typography,
-  Box,
   Chip,
   Divider,
+  Paper,
 } from '@mui/material';
 import React, { useState } from 'react';
-import QuizeDialog from './QuizExplainBox';
+import { motion } from 'framer-motion';
+import QuizDialog from './QuizExplainBox';
+import QuizFullDialog from './QuizExplainFullBox';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const theme = createTheme({
+  palette: {
+    ochre: {
+      main: '#ffeb3b',
+      light: '#E9DB5D',
+      dark: '#A29415',
+      contrastText: '#242105',
+    },
+  },
+});
 const QuizElementBox = ({ title, numberSolved, averageScore, id, tag }) => {
   const colorForTag = (tag) => {
     switch (tag) {
@@ -23,33 +35,49 @@ const QuizElementBox = ({ title, numberSolved, averageScore, id, tag }) => {
       case 'OPERATING_SYSTEM':
         return 'success';
       case 'DATA_STRUCTURE':
-        return 'info';
+        return 'ochre';
     }
   };
   return (
-    <div>
-      <Card variant='outlined' sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Chip label={tag} color={colorForTag(tag)} />
-          <Typography sx={{ fontSize: 20 }} color='text.secondary' gutterBottom>
-            {title}
-          </Typography>
-          <Divider variant='middle' />
-          <Typography variant='body2'></Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            // width: '100%',
-            // height: 'auto',
-          }}
-        >
-          <QuizeDialog title={title} />
-        </CardActions>
-      </Card>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Paper
+        elevation={4}
+        component={motion.div}
+        whileHover={{
+          scale: 1.1,
+          transition: { duration: 0.3 },
+        }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <Card variant='outlined' sx={{ minWidth: 275, minHeight: 240 }}>
+          <CardContent>
+            <Chip label={tag} color={colorForTag(tag)} />
+          </CardContent>
+          <CardContent>
+            <Typography
+              sx={{ fontSize: 20 }}
+              color='text.secondary'
+              gutterBottom
+            >
+              {title}
+            </Typography>
+            <Divider variant='middle' />
+            <Typography variant='body2'></Typography>
+          </CardContent>
+          <CardActions
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              // width: '100%',
+              // height: 'auto',
+            }}
+          >
+            <QuizDialog title={title} id={id} />
+          </CardActions>
+        </Card>
+      </Paper>
+    </ThemeProvider>
   );
 };
 
